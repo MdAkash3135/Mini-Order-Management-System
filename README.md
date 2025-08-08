@@ -31,6 +31,11 @@ A simple order management system for managing products, customers, and orders. T
    ```bash
    python manage.py runserver
    ```
+4. Create and activate virtualenv
+   ```bash
+    virtualenv venv
+    source venv/bin/activate
+    ```
 
 ## Usage
 
