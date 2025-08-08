@@ -1,1 +1,3 @@
 venv/
+local_settings.py
+order_mgmt/local_settings.py
