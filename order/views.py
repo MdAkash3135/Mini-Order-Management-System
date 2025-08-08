@@ -4,6 +4,11 @@ from django.shortcuts import render
 from django.http import JsonResponse
 
 
+from rest_framework import generics
+from .models import Customer
+from .serializers import CustomerCreateSerializer
+
+
 def healthcheck(request):
     return JsonResponse({"status": "ok"})
 from rest_framework.views import APIView
@@ -21,3 +26,8 @@ class OrderListCreateAPIView(APIView):
             detail_serializer = OrderDetailSerializer(order)
             return Response(detail_serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class CustomerCreateAPIView(generics.CreateAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerCreateSerializer
