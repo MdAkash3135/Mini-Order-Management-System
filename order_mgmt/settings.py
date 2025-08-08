@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'order',  # Your order management app
+    'rest_framework',  # Django REST Framework for API support
+    'drf-yasg',
 ]
 
 MIDDLEWARE = [
