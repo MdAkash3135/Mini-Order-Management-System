@@ -29,7 +29,7 @@ A simple order management system for managing products, customers, and orders. T
    ```
 3. Run the application:
    ```bash
-   python main.py
+   python manage.py runserver
    ```
 
 ## Usage
