@@ -5,8 +5,8 @@ from django.http import JsonResponse
 
 
 from rest_framework import generics
-from .models import Customer
-from .serializers import CustomerCreateSerializer
+from .models import Customer, Variant
+from .serializers import *
 
 
 def healthcheck(request):
@@ -14,8 +14,8 @@ def healthcheck(request):
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import OrderCreateSerializer, OrderDetailSerializer
-from .models import Order
+from .serializers import *
+from .models import *
 
 
 class OrderListCreateAPIView(APIView):
@@ -31,3 +31,13 @@ class OrderListCreateAPIView(APIView):
 class CustomerCreateAPIView(generics.CreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerCreateSerializer
+
+class VariantListCreateAPIView(generics.ListCreateAPIView):
+    queryset = Variant.objects.all()
+    serializer_class = VariantSerializer
+
+
+
+class OrderDetailAPIView(generics.RetrieveAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderDetailSerializer
