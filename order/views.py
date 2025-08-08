@@ -41,3 +41,9 @@ class VariantListCreateAPIView(generics.ListCreateAPIView):
 class OrderDetailAPIView(generics.RetrieveAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderDetailSerializer
+
+
+
+class CustomerReportAPIView(generics.RetrieveAPIView):
+    queryset = Customer.objects.all()
+    serializer_class = CustomerReportSerializer

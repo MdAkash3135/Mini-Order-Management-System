@@ -2,6 +2,13 @@ from rest_framework import serializers
 from .models import Customer, Variant, Order, OrderItem
 
 
+
+class CustomerReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Customer
+        fields = ["id", "name", "total_spent"]
+
+
 class OrderItemSerializer(serializers.Serializer):
     variant_id = serializers.IntegerField()
     quantity = serializers.IntegerField(min_value=1)
