@@ -17,15 +17,20 @@ from rest_framework import status
 from .serializers import *
 from .models import *
 
+from .tasks import process_order
 
-class OrderListCreateAPIView(APIView):
+
+class OrderCreateAPIView(APIView):
     def post(self, request):
-        serializer = OrderCreateSerializer(data=request.data)
-        if serializer.is_valid():
-            order = serializer.save()
-            detail_serializer = OrderDetailSerializer(order)
-            return Response(detail_serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        customer_id = request.data.get("customer_id")
+        items = request.data.get("items", [])
+
+        if not customer_id or not items:
+            return Response({"error": "Missing data"}, status=status.HTTP_400_BAD_REQUEST)
+
+        process_order.delay(customer_id, items)  # queue task
+
+        return Response({"message": "Order is being processed"}, status=status.HTTP_202_ACCEPTED)
 
 
 class CustomerCreateAPIView(generics.CreateAPIView):

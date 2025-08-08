@@ -1,0 +1,48 @@
+# version: '3.8'
+
+services:
+  web:
+    build: .
+    entrypoint: /app/entrypoint.sh
+    command: gunicorn order_mgmt.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+      - redis
+    environment:
+      - DEBUG=1
+      - DATABASE_URL=postgres://postgres:password@db:5432/order_db
+      - REDIS_URL=redis://redis:6379/0
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: order_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  redis:
+    image: redis:7
+    ports:
+      - "6380:6379"
+
+  celery:
+    build: .
+    entrypoint: /app/entrypoint.sh
+    command: celery -A order_mgmt worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+      - db
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db:5432/order_db
+      - REDIS_URL=redis://redis:6379/0
+
+volumes:
+  postgres_data:
